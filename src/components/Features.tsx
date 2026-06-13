@@ -129,7 +129,7 @@ export default function Features() {
   const { ref: headerRef, inView: headerInView } = useInView(0.2);
 
   return (
-    <section id="caracteristicas" className="py-28 lg:py-44">
+    <section id="caracteristicas" className="py-12 lg:py-16">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div

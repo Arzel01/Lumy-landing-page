@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Minus, Plus, Check, Shield, Truck, Zap } from 'lucide-react';
 import ImagePlaceholder from './ImagePlaceholder';
+import { useCart } from '../context/CartContext';
 
 type ColorVariantId = 'obsidian' | 'silver' | 'midnight';
 
@@ -9,12 +11,19 @@ type ColorVariant = {
   label: string;
   bgColor: string;
   ringColor: string;
+  images?: string[];
 };
 
-type Toast = { visible: boolean; message: string };
-
 const COLOR_VARIANTS: ColorVariant[] = [
-  { id: 'obsidian', label: 'Obsidian Black', bgColor: '#141414', ringColor: '#2474D5' },
+  {
+    id: 'obsidian',
+    label: 'Obsidian Black',
+    bgColor: '#141414',
+    ringColor: '#2474D5',
+    images: [
+      '/lumy-obsidian.jpg',
+    ],
+  },
   { id: 'silver', label: 'Arctic Silver', bgColor: '#9eb0c8', ringColor: '#9044EB' },
   { id: 'midnight', label: 'Midnight Blue', bgColor: '#102050', ringColor: '#C12B4D' },
 ];
@@ -39,49 +48,49 @@ const TRUST_BADGES = [
 ];
 
 export default function Ecommerce() {
+  const navigate = useNavigate();
+  const { addItem } = useCart();
+
   const [selectedColor, setSelectedColor] = useState<ColorVariantId>('obsidian');
   const [quantity, setQuantity] = useState<number>(1);
   const [activeImage, setActiveImage] = useState<number>(0);
-  const [toast, setToast] = useState<Toast>({ visible: false, message: '' });
 
-  const showToast = (message: string) => {
-    setToast({ visible: true, message });
-    setTimeout(() => setToast({ visible: false, message: '' }), 3200);
-  };
+  const activeVariant = COLOR_VARIANTS.find((c) => c.id === selectedColor)!;
 
   const handleAddToCart = () => {
-    const colorLabel =
-      COLOR_VARIANTS.find((c) => c.id === selectedColor)?.label ?? '';
-    console.log('Añadir al carrito:', { color: selectedColor, quantity });
-    showToast(`✓ ${quantity}× LUMY ${colorLabel} añadido al carrito`);
+    addItem({
+      id: `lumy-${selectedColor}`,
+      name: 'LUMY® — Navegador Holográfico Inteligente',
+      colorId: selectedColor,
+      colorLabel: activeVariant.label,
+      colorHex: activeVariant.bgColor,
+      quantity,
+      unitPrice: 129,
+      imageLabel: GALLERY_LABELS[0],
+    });
+    navigate('/checkout/carrito');
   };
 
-  const handlePayment = (method: string) => {
-    console.log(`Pago con ${method}`, { color: selectedColor, quantity });
-    showToast(`Redirigiendo a ${method}…`);
+  const handleExpressPayment = (method: string) => {
+    addItem({
+      id: `lumy-${selectedColor}`,
+      name: 'LUMY® — Navegador Holográfico Inteligente',
+      colorId: selectedColor,
+      colorLabel: activeVariant.label,
+      colorHex: activeVariant.bgColor,
+      quantity,
+      unitPrice: 129,
+      imageLabel: GALLERY_LABELS[0],
+    });
+    console.log(`Pago express con ${method}`);
+    navigate('/checkout/envio');
   };
 
   const dec = () => setQuantity((q) => Math.max(1, q - 1));
   const inc = () => setQuantity((q) => Math.min(10, q + 1));
 
-  const activeVariant = COLOR_VARIANTS.find((c) => c.id === selectedColor)!;
-
   return (
-    <section id="comprar" className="py-28 lg:py-44 relative">
-      {/* Toast notification */}
-      <div
-        className={`fixed top-24 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full text-sm font-medium text-white text-center whitespace-nowrap transition-all duration-400 pointer-events-none ${
-          toast.visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
-        }`}
-        style={{
-          background: 'linear-gradient(135deg, #2474D5, #9044EB)',
-          boxShadow: '0 16px 40px rgba(144,68,235,0.45)',
-          fontFamily: 'DM Sans, sans-serif',
-        }}
-      >
-        {toast.message}
-      </div>
-
+    <section id="comprar" className="py-12 lg:py-16 relative">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section header */}
         <div className="text-center mb-14">
@@ -110,13 +119,23 @@ export default function Ecommerce() {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* ── Gallery ── */}
+          {/* Gallery */}
           <div className="flex flex-col gap-4">
-            <ImagePlaceholder
-              label={GALLERY_LABELS[activeImage]}
-              width="w-full"
-              height="h-80 md:h-[460px]"
-            />
+            {/* Main image */}
+            {activeVariant.images?.[activeImage] ? (
+              <img
+                src={activeVariant.images[activeImage]}
+                alt={`LUMY ${activeVariant.label}`}
+                className="w-full h-80 md:h-[460px] object-cover rounded-2xl"
+                style={{ border: '1px solid rgba(255,255,255,0.06)' }}
+              />
+            ) : (
+              <ImagePlaceholder
+                label={GALLERY_LABELS[activeImage]}
+                width="w-full"
+                height="h-80 md:h-[460px]"
+              />
+            )}
             {/* Thumbnails */}
             <div className="grid grid-cols-4 gap-3">
               {GALLERY_LABELS.map((label, i) => (
@@ -127,24 +146,30 @@ export default function Ecommerce() {
                   className="rounded-xl overflow-hidden transition-all duration-200 focus:outline-none"
                   style={{
                     opacity: activeImage === i ? 1 : 0.45,
-                    outline:
-                      activeImage === i ? '2px solid #9044EB' : '2px solid transparent',
+                    outline: activeImage === i ? '2px solid #9044EB' : '2px solid transparent',
                     outlineOffset: '2px',
                   }}
                 >
-                  <ImagePlaceholder
-                    label={`Miniatura ${i + 1}: ${label}`}
-                    width="w-full"
-                    height="h-16 md:h-20"
-                  />
+                  {activeVariant.images?.[i] ? (
+                    <img
+                      src={activeVariant.images[i]}
+                      alt={`LUMY ${activeVariant.label} ${i + 1}`}
+                      className="w-full h-16 md:h-20 object-cover"
+                    />
+                  ) : (
+                    <ImagePlaceholder
+                      label={`Miniatura ${i + 1}: ${label}`}
+                      width="w-full"
+                      height="h-16 md:h-20"
+                    />
+                  )}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* ── Product details ── */}
+          {/* Product details */}
           <div className="flex flex-col">
-            {/* Launch badge */}
             <span
               className="self-start text-xs font-medium px-3 py-1 rounded-full mb-5"
               style={{
@@ -157,7 +182,6 @@ export default function Ecommerce() {
               🔥 Oferta de Lanzamiento — Quedan pocas unidades
             </span>
 
-            {/* Title */}
             <h2
               className="font-bold text-2xl lg:text-3xl text-white leading-tight mb-3"
               style={{ fontFamily: 'Sora, sans-serif' }}
@@ -165,106 +189,95 @@ export default function Ecommerce() {
               LUMY® — Navegador Holográfico Inteligente
             </h2>
 
-            {/* Stars */}
             <div className="flex items-center gap-2 mb-6">
               <div className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <span key={i} className="text-yellow-400 text-base">★</span>
                 ))}
               </div>
-              <span
-                className="text-slate-400 text-sm"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}
-              >
+              <span className="text-slate-400 text-sm" style={{ fontFamily: 'DM Sans, sans-serif' }}>
                 4.9 · 142 reseñas
               </span>
             </div>
 
-            {/* Price */}
             <div className="flex items-baseline gap-4 mb-8">
-              <span
-                className="font-bold text-4xl text-white"
-                style={{ fontFamily: 'Sora, sans-serif' }}
-              >
+              <span className="font-bold text-4xl text-white" style={{ fontFamily: 'Sora, sans-serif' }}>
                 $129.00
               </span>
               <span className="text-slate-500 text-xl line-through">$169.00</span>
               <span
                 className="text-xs font-bold px-2 py-1 rounded-lg"
-                style={{
-                  background: 'rgba(193,43,77,0.12)',
-                  color: '#fb7185',
-                }}
+                style={{ background: 'rgba(193,43,77,0.12)', color: '#fb7185' }}
               >
                 −24%
               </span>
             </div>
 
-            {/* Color variants */}
-            <div className="mb-7">
-              <p
-                className="text-slate-400 text-sm mb-3"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}
-              >
-                Color:{' '}
-                <span className="text-white font-medium">{activeVariant.label}</span>
-              </p>
-              <div className="flex gap-3">
-                {COLOR_VARIANTS.map((v) => {
-                  const isSelected = v.id === selectedColor;
-                  return (
-                    <button
-                      key={v.id}
-                      type="button"
-                      title={v.label}
-                      onClick={() => setSelectedColor(v.id)}
-                      className="w-8 h-8 rounded-full transition-transform duration-200 focus:outline-none"
-                      style={{
-                        background: v.bgColor,
-                        border: `2px solid ${isSelected ? v.ringColor : 'transparent'}`,
-                        transform: isSelected ? 'scale(1.15)' : 'scale(1)',
-                        boxShadow: isSelected
-                          ? `0 0 0 2px rgba(255,255,255,0.12), 0 0 14px ${v.ringColor}60`
-                          : 'none',
-                      }}
-                    />
-                  );
-                })}
+            {/* Color + Quantity row */}
+            <div className="flex items-end gap-6 mb-8">
+              {/* Color */}
+              <div>
+                <p className="text-slate-400 text-sm mb-3" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                  Color:{' '}
+                  <span className="text-white font-medium">{activeVariant.label}</span>
+                </p>
+                <div className="flex gap-3">
+                  {COLOR_VARIANTS.map((v) => {
+                    const isSelected = v.id === selectedColor;
+                    return (
+                      <button
+                        key={v.id}
+                        type="button"
+                        title={v.label}
+                        onClick={() => { setSelectedColor(v.id); setActiveImage(0); }}
+                        className="w-8 h-8 rounded-full transition-transform duration-200 focus:outline-none"
+                        style={{
+                          background: v.bgColor,
+                          border: `2px solid ${isSelected ? v.ringColor : 'transparent'}`,
+                          transform: isSelected ? 'scale(1.15)' : 'scale(1)',
+                          boxShadow: isSelected
+                            ? `0 0 0 2px rgba(255,255,255,0.12), 0 0 14px ${v.ringColor}60`
+                            : 'none',
+                        }}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </div>
 
-            {/* Quantity */}
-            <div className="mb-8">
-              <p
-                className="text-slate-400 text-sm mb-3"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}
-              >
-                Cantidad
-              </p>
-              <div
-                className="inline-flex items-center rounded-xl overflow-hidden"
-                style={{ border: '1px solid rgba(255,255,255,0.09)' }}
-              >
-                <button
-                  type="button"
-                  onClick={dec}
-                  className="w-11 h-11 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 transition-colors focus:outline-none"
+              {/* Divider */}
+              <div className="self-stretch w-px" style={{ background: 'rgba(255,255,255,0.07)' }} />
+
+              {/* Quantity */}
+              <div>
+                <p className="text-slate-400 text-sm mb-3" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                  Cantidad
+                </p>
+                <div
+                  className="inline-flex items-center rounded-xl overflow-hidden"
+                  style={{ border: '1px solid rgba(255,255,255,0.09)' }}
                 >
-                  <Minus size={13} />
-                </button>
-                <span
-                  className="w-12 text-center font-bold text-white text-base"
-                  style={{ fontFamily: 'Sora, sans-serif' }}
-                >
-                  {quantity}
-                </span>
-                <button
-                  type="button"
-                  onClick={inc}
-                  className="w-11 h-11 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 transition-colors focus:outline-none"
-                >
-                  <Plus size={13} />
-                </button>
+                  <button
+                    type="button"
+                    onClick={dec}
+                    className="w-11 h-11 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 transition-colors focus:outline-none"
+                  >
+                    <Minus size={13} />
+                  </button>
+                  <span
+                    className="w-12 text-center font-bold text-white text-base"
+                    style={{ fontFamily: 'Sora, sans-serif' }}
+                  >
+                    {quantity}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={inc}
+                    className="w-11 h-11 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 transition-colors focus:outline-none"
+                  >
+                    <Plus size={13} />
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -294,7 +307,7 @@ export default function Ecommerce() {
               ))}
             </div>
 
-            {/* Add to cart */}
+            {/* Add to cart → checkout */}
             <button
               type="button"
               onClick={handleAddToCart}
@@ -312,34 +325,25 @@ export default function Ecommerce() {
             {/* Express payment */}
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-3">
-                <div
-                  className="flex-1 h-px"
-                  style={{ background: 'rgba(255,255,255,0.06)' }}
-                />
-                <span
-                  className="text-slate-600 text-xs"
-                  style={{ fontFamily: 'DM Sans, sans-serif' }}
-                >
+                <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
+                <span className="text-slate-600 text-xs" style={{ fontFamily: 'DM Sans, sans-serif' }}>
                   o paga rápido con
                 </span>
-                <div
-                  className="flex-1 h-px"
-                  style={{ background: 'rgba(255,255,255,0.06)' }}
-                />
+                <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 {(
                   [
-                    { label: ' Pay', method: 'Apple Pay' },
+                    { label: 'Apple Pay', method: 'Apple Pay' },
                     { label: 'PayPal', method: 'PayPal' },
-                    { label: 'VISA', method: 'Visa' },
+                    { label: 'VISA/Mastercard', method: 'Credit Card' },
                   ] as const
                 ).map(({ label, method }) => (
                   <button
                     key={method}
                     type="button"
-                    onClick={() => handlePayment(method)}
+                    onClick={() => handleExpressPayment(method)}
                     className="py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white transition-all duration-200 hover:bg-white/5 focus:outline-none"
                     style={{
                       background: 'rgba(255,255,255,0.025)',

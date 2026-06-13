@@ -37,7 +37,7 @@ export default function Unboxing() {
 
   return (
     <section
-      className="py-28 lg:py-44"
+      className="py-12 lg:py-16"
       style={{ background: 'rgba(255,255,255,0.008)' }}
     >
       <div className="max-w-7xl mx-auto px-6">

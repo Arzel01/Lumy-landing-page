@@ -87,7 +87,7 @@ export default function HardwareAnatomy() {
   return (
     <section
       id="hardware"
-      className="py-28 lg:py-44"
+      className="py-12 lg:py-16"
       style={{
         background:
           'linear-gradient(180deg, #05070F 0%, rgba(36,116,213,0.025) 50%, #05070F 100%)',

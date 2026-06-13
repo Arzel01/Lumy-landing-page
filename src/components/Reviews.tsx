@@ -84,7 +84,7 @@ export default function Reviews() {
   const { ref, inView } = useInView(0.1);
 
   return (
-    <section className="py-28 lg:py-44">
+    <section className="py-12 lg:py-16">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div

@@ -1,4 +1,5 @@
-import { ChevronRight, Play } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import ImagePlaceholder from './ImagePlaceholder';
 
 type Stat = { value: string; label: string };
@@ -10,18 +11,12 @@ const STATS: Stat[] = [
 ];
 
 export default function Hero() {
-  const handleOrder = () => {
-    document.querySelector('#comprar')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handleVideo = () => {
-    console.log('Ver Video clicked');
-  };
+  const navigate = useNavigate();
 
   return (
     <section
       id="inicio"
-      className="relative min-h-screen flex items-center pt-8 pb-24 overflow-hidden"
+      className="relative min-h-screen flex items-center pt-4 pb-12 overflow-hidden"
     >
       {/* Ambient background glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -41,7 +36,8 @@ export default function Hero() {
         <div
           className="absolute inset-0 opacity-[0.018]"
           style={{
-            backgroundImage: 'linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)',
+            backgroundImage:
+              'linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)',
             backgroundSize: '64px 64px',
           }}
         />
@@ -99,7 +95,7 @@ export default function Hero() {
           <div className="flex flex-wrap gap-4 mb-12">
             <button
               type="button"
-              onClick={handleOrder}
+              onClick={() => navigate('/tienda')}
               className="group flex items-center gap-2.5 px-8 py-4 rounded-full font-semibold text-sm text-white transition-all duration-300 hover:scale-105 active:scale-95"
               style={{
                 background: 'linear-gradient(135deg, #2474D5, #9044EB)',
@@ -112,24 +108,6 @@ export default function Hero() {
                 size={15}
                 className="group-hover:translate-x-0.5 transition-transform duration-200"
               />
-            </button>
-
-            <button
-              type="button"
-              onClick={handleVideo}
-              className="group flex items-center gap-3 px-7 py-4 rounded-full font-medium text-sm text-slate-200 transition-all duration-300 hover:text-white hover:bg-white/[0.04]"
-              style={{
-                border: '1px solid rgba(255,255,255,0.12)',
-                fontFamily: 'DM Sans, sans-serif',
-              }}
-            >
-              <span
-                className="w-8 h-8 flex items-center justify-center rounded-full flex-shrink-0 transition-transform duration-200 group-hover:scale-110"
-                style={{ background: 'rgba(255,255,255,0.07)' }}
-              >
-                <Play size={11} fill="white" className="translate-x-px" />
-              </span>
-              Ver Video
             </button>
           </div>
 
@@ -157,20 +135,46 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right: product image */}
+        {/* Right: product image — click to go to shop */}
         <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
           <div className="relative w-full max-w-lg">
             {/* Glow aura */}
             <div
               className="absolute -inset-8 rounded-full blur-3xl"
-              style={{ background: 'radial-gradient(circle, rgba(144,68,235,0.18) 0%, rgba(36,116,213,0.1) 50%, transparent 70%)' }}
+              style={{
+                background:
+                  'radial-gradient(circle, rgba(144,68,235,0.18) 0%, rgba(36,116,213,0.1) 50%, transparent 70%)',
+              }}
             />
-            <div className="relative animate-float">
+            <div
+              className="relative animate-float cursor-pointer group"
+              onClick={() => navigate('/tienda')}
+              title="Ver producto y comprar"
+            >
               <ImagePlaceholder
                 label="Foto Principal — Dispositivo LUMY encendido proyectando holograma de mapa tridimensional"
                 width="w-full"
                 height="h-72 md:h-[460px]"
+                className="transition-transform duration-300 group-hover:scale-[1.01]"
               />
+              {/* Hover overlay */}
+              <div
+                className="absolute inset-0 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ background: 'rgba(144,68,235,0.12)' }}
+              >
+                <span
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white"
+                  style={{
+                    background: 'rgba(0,0,0,0.6)',
+                    backdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    fontFamily: 'DM Sans, sans-serif',
+                  }}
+                >
+                  <ChevronRight size={14} />
+                  Comprar LUMY
+                </span>
+              </div>
             </div>
           </div>
         </div>
