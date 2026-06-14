@@ -1,6 +1,6 @@
 import { ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import ImagePlaceholder from './ImagePlaceholder';
+import lumyImg from '../assets/Lumy.jpeg';
 
 type Stat = { value: string; label: string };
 
@@ -151,11 +151,11 @@ export default function Hero() {
               onClick={() => navigate('/tienda')}
               title="Ver producto y comprar"
             >
-              <ImagePlaceholder
-                label="Foto Principal — Dispositivo LUMY encendido proyectando holograma de mapa tridimensional"
-                width="w-full"
-                height="h-72 md:h-[460px]"
-                className="transition-transform duration-300 group-hover:scale-[1.01]"
+              <img
+                src={lumyImg}
+                alt="Dispositivo LUMY"
+                className="w-full h-72 md:h-[460px] object-cover rounded-2xl transition-transform duration-300 group-hover:scale-[1.01]"
+                style={{ border: '1px solid rgba(255,255,255,0.06)' }}
               />
               {/* Hover overlay */}
               <div

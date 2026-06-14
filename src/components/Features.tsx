@@ -1,5 +1,7 @@
-import ImagePlaceholder from './ImagePlaceholder';
 import { useInView } from '../hooks/useInView';
+import feature1 from '../assets/Feature.jpeg';
+import feature2 from '../assets/Feature2.png';
+import feature3 from '../assets/Feature3.png';
 
 type Feature = {
   id: number;
@@ -7,6 +9,7 @@ type Feature = {
   title: string;
   description: string;
   tag: string;
+  imageSrc: string;
   imageLabel: string;
   accent: string;
   accentRgb: string;
@@ -20,8 +23,8 @@ const FEATURES: Feature[] = [
     description:
       'Proyecta destinos turísticos, mapas interactivos y menús tridimensionales directamente sobre cualquier superficie plana. Explora el mundo antes de pisarlo.',
     tag: 'Proyección Láser',
-    imageLabel:
-      'Proyección de Mapa 3D holográfico — destino turístico proyectado sobre mesa, colores cian y azul',
+    imageSrc: feature1,
+    imageLabel: 'Proyección de Mapa 3D holográfico',
     accent: '#2474D5',
     accentRgb: '36,116,213',
   },
@@ -32,8 +35,8 @@ const FEATURES: Feature[] = [
     description:
       'Combina IA, sensores espaciales y conectividad satelital para proyectar entornos incluso donde la señal móvil no existe. Cero fricción de red, en cualquier rincón del planeta.',
     tag: 'Sin Red Móvil',
-    imageLabel:
-      'Gráfico de conexión satelital — LUMY conectando con satélite en zona montañosa sin cobertura',
+    imageSrc: feature2,
+    imageLabel: 'Conectividad satelital LUMY',
     accent: '#9044EB',
     accentRgb: '144,68,235',
   },
@@ -44,8 +47,8 @@ const FEATURES: Feature[] = [
     description:
       'Comandos de voz naturales en cualquier idioma. Recomendaciones y sugerencias personalizadas por ubicación en tiempo real. Tu guía de viaje definitiva.',
     tag: 'IA On-Device',
-    imageLabel:
-      'Interfaz holográfica del Asistente IA LUMY — pantalla 3D con respuestas de voz y texto flotante',
+    imageSrc: feature3,
+    imageLabel: 'Asistente IA holográfico LUMY',
     accent: '#C12B4D',
     accentRgb: '193,43,77',
   },
@@ -114,10 +117,11 @@ function FeatureBlock({
               background: `radial-gradient(circle, ${feature.accent}, transparent)`,
             }}
           />
-          <ImagePlaceholder
-            label={feature.imageLabel}
-            width="w-full"
-            height="h-72 lg:h-96"
+          <img
+            src={feature.imageSrc}
+            alt={feature.imageLabel}
+            className="w-full h-72 lg:h-96 object-cover rounded-2xl"
+            style={{ border: '1px solid rgba(255,255,255,0.06)' }}
           />
         </div>
       </div>

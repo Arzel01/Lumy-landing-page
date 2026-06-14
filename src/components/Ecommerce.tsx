@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Minus, Plus, Check, Shield, Truck, Zap } from 'lucide-react';
-import ImagePlaceholder from './ImagePlaceholder';
+import productImg from '../assets/Product.png';
 import { useCart } from '../context/CartContext';
 
 type ColorVariantId = 'obsidian' | 'silver' | 'midnight';
@@ -20,12 +20,20 @@ const COLOR_VARIANTS: ColorVariant[] = [
     label: 'Obsidian Black',
     bgColor: '#141414',
     ringColor: '#2474D5',
-    images: [
-      '/lumy-obsidian.jpg',
-    ],
+    images: [productImg],
   },
-  { id: 'silver', label: 'Arctic Silver', bgColor: '#9eb0c8', ringColor: '#9044EB' },
-  { id: 'midnight', label: 'Midnight Blue', bgColor: '#102050', ringColor: '#C12B4D' },
+  {
+    id: 'silver',
+    label: 'Arctic Silver',
+    bgColor: '#9eb0c8',
+    ringColor: '#9044EB',
+  },
+  {
+    id: 'midnight',
+    label: 'Midnight Blue',
+    bgColor: '#102050',
+    ringColor: '#C12B4D',
+  },
 ];
 
 const GALLERY_LABELS = [
@@ -130,24 +138,46 @@ export default function Ecommerce() {
                 style={{ border: '1px solid rgba(255,255,255,0.06)' }}
               />
             ) : (
-              <ImagePlaceholder
-                label={GALLERY_LABELS[activeImage]}
-                width="w-full"
-                height="h-80 md:h-[460px]"
-              />
+              <div
+                className="w-full h-80 md:h-[460px] rounded-2xl flex flex-col items-center justify-center gap-3"
+                style={{
+                  background: 'rgba(255,255,255,0.02)',
+                  border: '1px solid rgba(255,255,255,0.07)',
+                }}
+              >
+                <span
+                  className="text-3xl font-bold tracking-widest uppercase"
+                  style={{
+                    background: 'linear-gradient(135deg, #2474D5, #9044EB)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    fontFamily: 'Sora, sans-serif',
+                  }}
+                >
+                  Próximamente
+                </span>
+                <span
+                  className="text-slate-500 text-sm"
+                  style={{ fontFamily: 'DM Sans, sans-serif' }}
+                >
+                  {activeVariant.label}
+                </span>
+              </div>
             )}
             {/* Thumbnails */}
             <div className="grid grid-cols-4 gap-3">
-              {GALLERY_LABELS.map((label, i) => (
+              {GALLERY_LABELS.map((_, i) => (
                 <button
                   key={i}
                   type="button"
-                  onClick={() => setActiveImage(i)}
+                  onClick={() => activeVariant.images && setActiveImage(i)}
                   className="rounded-xl overflow-hidden transition-all duration-200 focus:outline-none"
                   style={{
-                    opacity: activeImage === i ? 1 : 0.45,
-                    outline: activeImage === i ? '2px solid #9044EB' : '2px solid transparent',
+                    opacity: activeVariant.images ? (activeImage === i ? 1 : 0.45) : 0.5,
+                    outline: activeImage === i && activeVariant.images ? '2px solid #9044EB' : '2px solid transparent',
                     outlineOffset: '2px',
+                    cursor: activeVariant.images ? 'pointer' : 'default',
                   }}
                 >
                   {activeVariant.images?.[i] ? (
@@ -157,11 +187,20 @@ export default function Ecommerce() {
                       className="w-full h-16 md:h-20 object-cover"
                     />
                   ) : (
-                    <ImagePlaceholder
-                      label={`Miniatura ${i + 1}: ${label}`}
-                      width="w-full"
-                      height="h-16 md:h-20"
-                    />
+                    <div
+                      className="w-full h-16 md:h-20 flex items-center justify-center"
+                      style={{
+                        background: 'rgba(255,255,255,0.02)',
+                        border: '1px solid rgba(255,255,255,0.06)',
+                      }}
+                    >
+                      <span
+                        className="text-[9px] font-semibold tracking-widest uppercase text-center leading-tight px-1"
+                        style={{ color: '#475569', fontFamily: 'DM Sans, sans-serif' }}
+                      >
+                        Próxi&shy;mamente
+                      </span>
+                    </div>
                   )}
                 </button>
               ))}

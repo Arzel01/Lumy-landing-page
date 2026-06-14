@@ -1,7 +1,7 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Tag } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
-import ImagePlaceholder from '../../components/ImagePlaceholder';
+import productImg from '../../assets/Product.png';
 
 const SHIPPING_COST: number = 0;
 
@@ -64,11 +64,11 @@ export default function CartPage() {
             >
               {/* Thumbnail */}
               <div className="flex-shrink-0">
-                <ImagePlaceholder
-                  label={item.imageLabel}
-                  width="w-24"
-                  height="h-24"
-                  className="rounded-xl"
+                <img
+                  src={productImg}
+                  alt={item.imageLabel}
+                  className="w-24 h-24 object-cover rounded-xl"
+                  style={{ border: '1px solid rgba(255,255,255,0.06)' }}
                 />
               </div>
 

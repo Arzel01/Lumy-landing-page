@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ImagePlaceholder from './ImagePlaceholder';
+import hardwareImg from '../assets/Hardware.png';
 import { useInView } from '../hooks/useInView';
 
 type ComponentId =
@@ -125,7 +125,7 @@ export default function HardwareAnatomy() {
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-[3fr_2fr] gap-12 lg:gap-16 items-start">
           {/* Left: device image + active callout */}
           <div className="lg:sticky lg:top-32">
             <div className="relative">
@@ -135,10 +135,11 @@ export default function HardwareAnatomy() {
                   background: 'radial-gradient(circle, #9044EB 0%, #2474D5 60%, transparent 80%)',
                 }}
               />
-              <ImagePlaceholder
-                label="Vista Técnica del Cubo LUMY — imagen con líneas indicadoras hacia cada componente: sensor, lente, anillo LED, argolla, puerto USB-C, altavoz, botón"
-                width="w-full"
-                height="h-[380px] lg:h-[460px]"
+              <img
+                src={hardwareImg}
+                alt="Hardware LUMY"
+                className="w-full rounded-2xl"
+                style={{ display: 'block' }}
               />
             </div>
 

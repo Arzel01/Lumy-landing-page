@@ -1,5 +1,5 @@
 import { Package, Shield, Cable, BookOpen, type LucideIcon } from 'lucide-react';
-import ImagePlaceholder from './ImagePlaceholder';
+import unboxingImg from '../assets/Unboxing.jpeg';
 import { useInView } from '../hooks/useInView';
 
 type BoxItem = {
@@ -133,10 +133,11 @@ export default function Unboxing() {
                   background: 'linear-gradient(135deg, #2474D5, #9044EB)',
                 }}
               />
-              <ImagePlaceholder
-                label="Imagen del Unboxing LUMY — caja negra mate 22×12×5 cm abierta mostrando dispositivo, estuche, cable y guía"
-                width="w-full"
-                height="h-96 lg:h-[500px]"
+              <img
+                src={unboxingImg}
+                alt="Unboxing LUMY"
+                className="w-full h-[480px] lg:h-[580px] object-contain rounded-2xl"
+                style={{ border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}
               />
             </div>
           </div>

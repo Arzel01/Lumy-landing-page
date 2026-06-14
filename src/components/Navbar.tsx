@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingBag, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import logoImg from '../assets/Logo.png';
 
 type NavLink = { label: string; to: string };
 
@@ -14,38 +15,7 @@ const NAV_LINKS: NavLink[] = [
 
 function LumyLogo() {
   return (
-    <span
-      style={{
-        fontFamily: 'Sora, sans-serif',
-        fontWeight: 700,
-        letterSpacing: '0.18em',
-        fontSize: '1.25rem',
-        color: '#fff',
-      }}
-    >
-      L
-      <span
-        style={{
-          background: 'linear-gradient(135deg, #2474D5, #9044EB)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-        }}
-      >
-        U
-      </span>
-      M
-      <span
-        style={{
-          background: 'linear-gradient(135deg, #9044EB, #C12B4D)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-        }}
-      >
-        Y
-      </span>
-    </span>
+    <img src={logoImg} alt="LUMY" className="h-8 w-auto" style={{ display: 'block' }} />
   );
 }
 
