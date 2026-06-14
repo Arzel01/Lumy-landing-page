@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, Menu, X } from 'lucide-react';
+import { ShoppingCart, User, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import logoImg from '../assets/Logo.png';
 
 type NavLink = { label: string; to: string };
@@ -24,6 +25,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { itemCount } = useCart();
+  const { user } = useAuth();
 
   const isActive = (to: string) => pathname === to.split('#')[0];
 
@@ -84,18 +86,41 @@ export default function Navbar() {
 
         {/* Right actions */}
         <div className="hidden md:flex items-center gap-3">
+          {/* Account icon */}
+          <button
+            type="button"
+            onClick={() => navigate(user ? '/cuenta' : '/auth')}
+            className="relative w-9 h-9 flex items-center justify-center rounded-xl text-slate-400 hover:text-white transition-colors focus:outline-none"
+            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
+            title={user ? user.name : 'Iniciar sesión'}
+          >
+            {user ? (
+              <span
+                className="text-[10px] font-bold text-white"
+                style={{ fontFamily: 'Sora, sans-serif' }}
+              >
+                {user.name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()}
+              </span>
+            ) : (
+              <User size={15} />
+            )}
+          </button>
+
           {/* Cart icon */}
           <button
             type="button"
             onClick={() => navigate('/checkout/carrito')}
-            className="relative w-9 h-9 flex items-center justify-center rounded-xl text-slate-400 hover:text-white transition-colors focus:outline-none"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
+            className="relative flex items-center justify-center w-10 h-10 rounded-xl text-white transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none"
+            style={{
+              background: 'linear-gradient(135deg, #2474D5, #9044EB)',
+              boxShadow: '0 4px 16px rgba(144,68,235,0.45)',
+            }}
           >
-            <ShoppingBag size={15} />
+            <ShoppingCart size={16} />
             {itemCount > 0 && (
               <span
-                className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
-                style={{ background: '#9044EB', fontFamily: 'Sora, sans-serif' }}
+                className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
+                style={{ background: '#C12B4D', fontFamily: 'Sora, sans-serif' }}
               >
                 {itemCount}
               </span>
@@ -152,26 +177,46 @@ export default function Navbar() {
             </button>
           ))}
           <div className="flex gap-3 mt-5">
+            {/* Account mobile */}
             <button
               type="button"
-              onClick={() => { navigate('/checkout/carrito'); setMobileOpen(false); }}
-              className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm text-slate-300 transition-colors focus:outline-none"
+              onClick={() => { navigate(user ? '/cuenta' : '/auth'); setMobileOpen(false); }}
+              className="flex items-center justify-center w-12 h-12 rounded-xl text-slate-300 transition-colors focus:outline-none"
               style={{
                 background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(255,255,255,0.06)',
-                fontFamily: 'DM Sans, sans-serif',
               }}
             >
-              <ShoppingBag size={14} />
+              {user ? (
+                <span className="text-[10px] font-bold" style={{ fontFamily: 'Sora, sans-serif' }}>
+                  {user.name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()}
+                </span>
+              ) : (
+                <User size={15} />
+              )}
+            </button>
+
+            {/* Cart mobile */}
+            <button
+              type="button"
+              onClick={() => { navigate('/checkout/carrito'); setMobileOpen(false); }}
+              className="relative flex items-center justify-center w-12 h-12 rounded-xl text-white transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none"
+              style={{
+                background: 'linear-gradient(135deg, #2474D5, #9044EB)',
+                boxShadow: '0 4px 14px rgba(144,68,235,0.4)',
+              }}
+            >
+              <ShoppingCart size={16} />
               {itemCount > 0 && (
                 <span
-                  className="w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
-                  style={{ background: '#9044EB' }}
+                  className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
+                  style={{ background: '#C12B4D', fontFamily: 'Sora, sans-serif' }}
                 >
                   {itemCount}
                 </span>
               )}
             </button>
+
             <button
               type="button"
               onClick={() => { navigate('/tienda'); setMobileOpen(false); }}

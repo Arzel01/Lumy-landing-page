@@ -4,6 +4,8 @@ import CaracteristicasPage from './pages/CaracteristicasPage';
 import HardwarePage from './pages/HardwarePage';
 import TiendaPage from './pages/TiendaPage';
 import SoportePage from './pages/SoportePage';
+import AuthPage from './pages/AuthPage';
+import AccountPage from './pages/AccountPage';
 import CheckoutLayout from './layouts/CheckoutLayout';
 import CartPage from './pages/checkout/CartPage';
 import ShippingPage from './pages/checkout/ShippingPage';
@@ -18,6 +20,8 @@ export default function App() {
       <Route path="/hardware" element={<HardwarePage />} />
       <Route path="/tienda" element={<TiendaPage />} />
       <Route path="/soporte" element={<SoportePage />} />
+      <Route path="/auth" element={<AuthPage />} />
+      <Route path="/cuenta" element={<AccountPage />} />
 
       <Route path="/checkout" element={<CheckoutLayout />}>
         <Route index element={<Navigate to="/checkout/carrito" replace />} />
