@@ -184,11 +184,11 @@ export default function Ecommerce() {
                     <img
                       src={activeVariant.images[i]}
                       alt={`LUMY ${activeVariant.label} ${i + 1}`}
-                      className="w-full h-16 md:h-20 object-cover"
+                      className="w-full object-contain"
                     />
                   ) : (
                     <div
-                      className="w-full h-16 md:h-20 flex items-center justify-center"
+                      className="w-full aspect-square flex items-center justify-center"
                       style={{
                         background: 'rgba(255,255,255,0.02)',
                         border: '1px solid rgba(255,255,255,0.06)',
@@ -225,7 +225,7 @@ export default function Ecommerce() {
               className="font-bold text-2xl lg:text-3xl text-white leading-tight mb-3"
               style={{ fontFamily: 'Sora, sans-serif' }}
             >
-              LUMY® — Navegador Holográfico Inteligente
+              LUMY® Navegador Holográfico Inteligente
             </h2>
 
             <div className="flex items-center gap-2 mb-6">
