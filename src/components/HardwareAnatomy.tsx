@@ -138,7 +138,7 @@ export default function HardwareAnatomy() {
               <img
                 src={hardwareImg}
                 alt="Hardware LUMY"
-                className="w-full rounded-2xl"
+                className="w-full object-cover rounded-2xl"
                 style={{ display: 'block' }}
               />
             </div>

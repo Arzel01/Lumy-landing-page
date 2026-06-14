@@ -134,7 +134,7 @@ export default function Ecommerce() {
               <img
                 src={activeVariant.images[activeImage]}
                 alt={`LUMY ${activeVariant.label}`}
-                className="w-full h-80 md:h-[460px] object-cover rounded-2xl"
+                className="w-full rounded-2xl"
                 style={{ border: '1px solid rgba(255,255,255,0.06)' }}
               />
             ) : (
