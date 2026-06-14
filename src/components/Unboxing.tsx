@@ -136,7 +136,7 @@ export default function Unboxing() {
               <img
                 src={unboxingImg}
                 alt="Unboxing LUMY"
-                className="w-full h-[480px] lg:h-[580px] object-cover rounded-2xl"
+                className="w-full rounded-2xl"
                 style={{ border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}
               />
             </div>
