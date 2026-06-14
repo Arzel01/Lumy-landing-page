@@ -135,7 +135,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right: product image — click to go to shop */}
+        {/* Right: product image, click to go to shop */}
         <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
           <div className="relative w-full max-w-lg">
             {/* Glow aura */}

@@ -218,7 +218,7 @@ export default function Ecommerce() {
                 fontFamily: 'DM Sans, sans-serif',
               }}
             >
-              🔥 Oferta de Lanzamiento — Quedan pocas unidades
+              Oferta de Lanzamiento. Quedan pocas unidades
             </span>
 
             <h2
