@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Truck, Zap } from 'lucide-react';
 import { useCheckout, type ShippingInfo, type MetodoEnvio } from '../../context/CheckoutContext';
 import { useCart } from '../../context/CartContext';
-import ImagePlaceholder from '../../components/ImagePlaceholder';
+import productImg from '../../assets/Product.png';
 
 const PAISES = ['México', 'Colombia', 'Argentina', 'Chile', 'España', 'Perú', 'Venezuela', 'Ecuador', 'Otro'];
 
@@ -255,7 +255,7 @@ function OrderSummary({
         {items.map((item) => (
           <div key={item.id} className="flex gap-3 items-center">
             <div className="relative flex-shrink-0">
-              <ImagePlaceholder label={item.imageLabel} width="w-14" height="h-14" className="rounded-xl" />
+              <img src={productImg} alt={item.imageLabel} className="w-14 h-14 object-cover rounded-xl" />
               <span
                 className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-white"
                 style={{ background: '#9044EB', fontFamily: 'Sora, sans-serif' }}
