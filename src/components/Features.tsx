@@ -18,7 +18,7 @@ type Feature = {
 const FEATURES: Feature[] = [
   {
     id: 1,
-    eyebrow: '01 — Visualización',
+    eyebrow: '01 - Visualización',
     title: 'Navegación Holográfica 3D',
     description:
       'Proyecta destinos turísticos, mapas interactivos y menús tridimensionales directamente sobre cualquier superficie plana. Explora el mundo antes de pisarlo.',
@@ -30,7 +30,7 @@ const FEATURES: Feature[] = [
   },
   {
     id: 2,
-    eyebrow: '02 — Conectividad',
+    eyebrow: '02 - Conectividad',
     title: 'Conectividad Satelital Independiente',
     description:
       'Combina IA, sensores espaciales y conectividad satelital para proyectar entornos incluso donde la señal móvil no existe. Cero fricción de red, en cualquier rincón del planeta.',
@@ -42,7 +42,7 @@ const FEATURES: Feature[] = [
   },
   {
     id: 3,
-    eyebrow: '03 — Inteligencia',
+    eyebrow: '03 - Inteligencia',
     title: 'Asistente Inteligente Avanzado',
     description:
       'Comandos de voz naturales en cualquier idioma. Recomendaciones y sugerencias personalizadas por ubicación en tiempo real. Tu guía de viaje definitiva.',

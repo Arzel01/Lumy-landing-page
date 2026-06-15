@@ -37,9 +37,9 @@ const COLOR_VARIANTS: ColorVariant[] = [
 ];
 
 const GALLERY_LABELS = [
-  'LUMY en caja premium negra mate — vista frontal del empaque',
-  'Dispositivo LUMY — vista lateral con puerto USB-C y botón multifunción',
-  'LUMY proyectando holograma — demo de mapa 3D en uso real',
+  'LUMY en caja premium negra mate - vista frontal del empaque',
+  'Dispositivo LUMY - vista lateral con puerto USB-C y botón multifunción',
+  'LUMY proyectando holograma - demo de mapa 3D en uso real',
   'LUMY con estuche protector EVA incluido en la caja',
 ];
 
@@ -68,7 +68,7 @@ export default function Ecommerce() {
   const handleAddToCart = () => {
     addItem({
       id: `lumy-${selectedColor}`,
-      name: 'LUMY® — Navegador Holográfico Inteligente',
+      name: 'LUMY® - Navegador Holográfico Inteligente',
       colorId: selectedColor,
       colorLabel: activeVariant.label,
       colorHex: activeVariant.bgColor,
@@ -82,7 +82,7 @@ export default function Ecommerce() {
   const handleExpressPayment = (method: string) => {
     addItem({
       id: `lumy-${selectedColor}`,
-      name: 'LUMY® — Navegador Holográfico Inteligente',
+      name: 'LUMY® - Navegador Holográfico Inteligente',
       colorId: selectedColor,
       colorLabel: activeVariant.label,
       colorHex: activeVariant.bgColor,
@@ -358,7 +358,7 @@ export default function Ecommerce() {
               }}
             >
               <ShoppingCart size={19} />
-              AÑADIR AL CARRITO — ${(129 * quantity).toFixed(2)} USD
+              AÑADIR AL CARRITO - ${(129 * quantity).toFixed(2)} USD
             </button>
 
             {/* Express payment */}

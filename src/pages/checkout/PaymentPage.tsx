@@ -297,7 +297,7 @@ export default function PaymentPage() {
             ) : (
               <>
                 <Lock size={14} />
-                Confirmar pedido — ${(total * 1.08).toFixed(2)} USD
+                Confirmar pedido - ${(total * 1.08).toFixed(2)} USD
               </>
             )}
           </button>

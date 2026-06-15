@@ -365,7 +365,7 @@ export default function AuthPage() {
               className="text-center text-[11px] text-slate-600 leading-relaxed"
               style={{ fontFamily: 'DM Sans, sans-serif' }}
             >
-              Cuenta temporal — los datos se eliminan al cerrar el navegador.
+              Cuenta temporal - los datos se eliminan al cerrar el navegador.
             </p>
           </form>
         )}

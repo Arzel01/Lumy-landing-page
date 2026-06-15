@@ -10,7 +10,7 @@ const FOOTER_SECTIONS: FooterSection[] = [
       { label: 'Características', href: '#caracteristicas' },
       { label: 'Hardware', href: '#hardware' },
       { label: 'Especificaciones', href: '#' },
-      { label: 'Comparar', href: '#' },
+      { label: 'Comprar', href: '#' },
     ],
   },
   {

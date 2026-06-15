@@ -75,7 +75,7 @@ export default function Unboxing() {
               className="text-slate-400 text-base lg:text-lg mb-10 leading-relaxed"
               style={{ fontFamily: 'DM Sans, sans-serif' }}
             >
-              Caja de cartón rígido laminado negro mate — 22×12×5 cm. Diseñada para
+              Caja de cartón rígido laminado negro mate - 22×12×5 cm. Diseñada para
               que el primer contacto con LUMY sea una experiencia memorable.
             </p>
 
