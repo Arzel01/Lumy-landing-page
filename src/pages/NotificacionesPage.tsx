@@ -1,5 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { Cpu } from 'lucide-react';
+import {
+  Cpu, Waves, Mountain, Leaf, Palette, Landmark, Sun,
+  ShoppingBag, Globe, Fish, TreePine,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import PageLayout from '../layouts/PageLayout';
 
@@ -9,28 +13,28 @@ type Card = {
   type: string;
   description: string;
   gradient: string;
-  icon: string;
+  Icon: LucideIcon;
 };
 
 const PARA_TI: Card[] = [
-  { id: 1, destination: 'Malecón 2000', type: 'Paseo fluvial', description: '2.5 km a orillas del río Guayas. Jardines, museos, cine IMAX y el Mercado del Malecón.', gradient: 'linear-gradient(135deg, #2474D5, #1e5faf)', icon: '🌊' },
-  { id: 2, destination: 'Cerro Santa Ana', type: 'Mirador', description: '444 escalones con vista panorámica de Guayaquil y el río Guayas. Barrio Las Peñas al pie.', gradient: 'linear-gradient(135deg, #f97316, #ea580c)', icon: '⛰️' },
-  { id: 3, destination: 'Parque Histórico', type: 'Parque temático', description: 'Reserva de fauna nativa y reconstrucción de la Guayaquil colonial a orillas del Daule.', gradient: 'linear-gradient(135deg, #22c55e, #16a34a)', icon: '🌿' },
-  { id: 4, destination: 'MAAC', type: 'Museo', description: 'Museo Antropológico y de Arte Contemporáneo. Entrada gratuita domingos. Vista al Malecón.', gradient: 'linear-gradient(135deg, #9044EB, #7c3aed)', icon: '🎨' },
+  { id: 1, destination: 'Malecón 2000', type: 'Paseo fluvial', description: '2.5 km a orillas del río Guayas. Jardines, museos, cine IMAX y el Mercado del Malecón.', gradient: 'linear-gradient(135deg, #2474D5, #1e5faf)', Icon: Waves },
+  { id: 2, destination: 'Cerro Santa Ana', type: 'Mirador', description: '444 escalones con vista panorámica de Guayaquil y el río Guayas. Barrio Las Peñas al pie.', gradient: 'linear-gradient(135deg, #f97316, #ea580c)', Icon: Mountain },
+  { id: 3, destination: 'Parque Histórico', type: 'Parque temático', description: 'Reserva de fauna nativa y reconstrucción de la Guayaquil colonial a orillas del Daule.', gradient: 'linear-gradient(135deg, #22c55e, #16a34a)', Icon: TreePine },
+  { id: 4, destination: 'MAAC', type: 'Museo', description: 'Museo Antropológico y de Arte Contemporáneo. Entrada gratuita domingos. Vista al Malecón.', gradient: 'linear-gradient(135deg, #9044EB, #7c3aed)', Icon: Palette },
 ];
 
 const MAS_VISITADOS: Card[] = [
-  { id: 5, destination: 'Isla Santay', type: 'Reserva natural', description: 'Isla ecológica a 10 min del Malecón. Avistamiento de iguanas y aves tropicales.', gradient: 'linear-gradient(135deg, #0d9488, #0f766e)', icon: '🦎' },
-  { id: 6, destination: 'Plaza Olmedo', type: 'Plaza histórica', description: 'Centro cívico de Guayaquil con estatua de Francisco de Orellana. Mercados artesanales cercanos.', gradient: 'linear-gradient(135deg, #2474D5, #9044EB)', icon: '🏛️' },
-  { id: 7, destination: 'Salinas', type: 'Playa', description: 'La playa más popular del Ecuador. A 2 h de Guayaquil con aguas tranquilas del Pacífico.', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)', icon: '🏖️' },
-  { id: 8, destination: 'Mercado Artesanal', type: 'Mercado', description: 'El mayor mercado de artesanías del Ecuador. Más de 250 locales en el centro de Guayaquil.', gradient: 'linear-gradient(135deg, #e11d48, #be123c)', icon: '🛍️' },
+  { id: 5, destination: 'Isla Santay', type: 'Reserva natural', description: 'Isla ecológica a 10 min del Malecón. Avistamiento de iguanas y aves tropicales.', gradient: 'linear-gradient(135deg, #0d9488, #0f766e)', Icon: Leaf },
+  { id: 6, destination: 'Plaza Olmedo', type: 'Plaza histórica', description: 'Centro cívico de Guayaquil con estatua de Francisco de Orellana. Mercados artesanales cercanos.', gradient: 'linear-gradient(135deg, #2474D5, #9044EB)', Icon: Landmark },
+  { id: 7, destination: 'Salinas', type: 'Playa', description: 'La playa más popular del Ecuador. A 2 h de Guayaquil con aguas tranquilas del Pacífico.', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)', Icon: Sun },
+  { id: 8, destination: 'Mercado Artesanal', type: 'Mercado', description: 'El mayor mercado de artesanías del Ecuador. Más de 250 locales en el centro de Guayaquil.', gradient: 'linear-gradient(135deg, #e11d48, #be123c)', Icon: ShoppingBag },
 ];
 
 const TENDENCIAS: Card[] = [
-  { id: 9, destination: 'Montañita', type: 'Surf', description: 'Destino surfer del Pacífico ecuatoriano. Olas perfectas y ambiente bohemio. A 2 h de Guayaquil.', gradient: 'linear-gradient(135deg, #0ea5e9, #0284c7)', icon: '🏄' },
-  { id: 10, destination: 'Galápagos', type: 'Archipiélago', description: 'Patrimonio Natural de la UNESCO. Vuelos directos desde Guayaquil (1h30). Temporada alta activa.', gradient: 'linear-gradient(135deg, #10b981, #059669)', icon: '🐢' },
-  { id: 11, destination: 'Cuenca', type: 'Ciudad colonial', description: 'Ciudad Patrimonio de la Humanidad a 4 h de Guayaquil. Festival de Arte en temporada.', gradient: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', icon: '🏰' },
-  { id: 12, destination: 'Puerto López', type: 'Avistamiento', description: 'Temporada de ballenas jorobadas (jun–sep). El mejor avistamiento del Pacífico sur.', gradient: 'linear-gradient(135deg, #0284c7, #0ea5e9)', icon: '🐋' },
+  { id: 9, destination: 'Montañita', type: 'Surf', description: 'Destino surfer del Pacífico ecuatoriano. Olas perfectas y ambiente bohemio. A 2 h de Guayaquil.', gradient: 'linear-gradient(135deg, #0ea5e9, #0284c7)', Icon: Waves },
+  { id: 10, destination: 'Galápagos', type: 'Archipiélago', description: 'Patrimonio Natural de la UNESCO. Vuelos directos desde Guayaquil (1h30). Temporada alta activa.', gradient: 'linear-gradient(135deg, #10b981, #059669)', Icon: Globe },
+  { id: 11, destination: 'Cuenca', type: 'Ciudad colonial', description: 'Ciudad Patrimonio de la Humanidad a 4 h de Guayaquil. Festival de Arte en temporada.', gradient: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', Icon: Landmark },
+  { id: 12, destination: 'Puerto López', type: 'Avistamiento', description: 'Temporada de ballenas jorobadas (jun–sep). El mejor avistamiento del Pacífico sur.', gradient: 'linear-gradient(135deg, #0284c7, #0ea5e9)', Icon: Fish },
 ];
 
 function CardItem({ card }: { card: Card }) {
@@ -39,8 +43,11 @@ function CardItem({ card }: { card: Card }) {
       className="flex-shrink-0 w-44 rounded-2xl p-4"
       style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
     >
-      <div className="w-10 h-10 rounded-xl mb-3 flex items-center justify-center text-lg" style={{ background: card.gradient }}>
-        {card.icon}
+      <div
+        className="w-10 h-10 rounded-xl mb-3 flex items-center justify-center"
+        style={{ background: card.gradient }}
+      >
+        <card.Icon size={18} color="white" />
       </div>
       <p className="text-white text-xs font-semibold mb-0.5 leading-tight" style={{ fontFamily: 'Sora, sans-serif' }}>
         {card.destination}
@@ -75,7 +82,6 @@ export default function NotificacionesPage() {
     return null;
   }
 
-  // No devices — show CTA
   if (user.devices.length === 0) {
     return (
       <PageLayout>
@@ -128,13 +134,13 @@ export default function NotificacionesPage() {
           Lumy actualizado · Día normal
         </div>
 
-        <h2 className="text-white font-semibold text-sm mb-3 mt-7" style={{ fontFamily: 'Sora, sans-serif' }}>✨ Para ti</h2>
+        <h2 className="text-white font-semibold text-sm mb-3 mt-7" style={{ fontFamily: 'Sora, sans-serif' }}>Para ti</h2>
         <ScrollRow cards={PARA_TI} />
 
-        <h2 className="text-white font-semibold text-sm mb-3 mt-7" style={{ fontFamily: 'Sora, sans-serif' }}>🔥 Más visitados</h2>
+        <h2 className="text-white font-semibold text-sm mb-3 mt-7" style={{ fontFamily: 'Sora, sans-serif' }}>Más visitados</h2>
         <ScrollRow cards={MAS_VISITADOS} />
 
-        <h2 className="text-white font-semibold text-sm mb-3 mt-7" style={{ fontFamily: 'Sora, sans-serif' }}>📈 Tendencias de temporada</h2>
+        <h2 className="text-white font-semibold text-sm mb-3 mt-7" style={{ fontFamily: 'Sora, sans-serif' }}>Tendencias de temporada</h2>
         <ScrollRow cards={TENDENCIAS} />
 
         <p className="text-slate-700 text-[10px] mt-8 text-center" style={{ fontFamily: 'DM Sans, sans-serif' }}>
