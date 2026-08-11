@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search } from 'lucide-react';
+import { Search, Cpu } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import PageLayout from '../layouts/PageLayout';
 
@@ -56,6 +56,37 @@ export default function MapaPage() {
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [response, setResponse] = useState<string | null>(null);
+
+  const hasDevices = (user?.devices?.length ?? 0) > 0;
+
+  if (user && !hasDevices) {
+    return (
+      <PageLayout>
+        <div className="max-w-2xl mx-auto px-4 py-10 flex flex-col items-center text-center">
+          <div
+            className="w-16 h-16 rounded-3xl flex items-center justify-center mb-5"
+            style={{ background: 'rgba(144,68,235,0.08)', border: '1px solid rgba(144,68,235,0.15)' }}
+          >
+            <Cpu size={28} className="text-purple-500" />
+          </div>
+          <h2 className="text-white font-bold text-xl mb-2" style={{ fontFamily: 'Sora, sans-serif' }}>
+            Vincula tu dispositivo Lumy
+          </h2>
+          <p className="text-slate-500 text-sm leading-relaxed mb-6 max-w-xs" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            Para acceder al mapa con Lumy AI necesitas tener al menos un dispositivo Lumy vinculado a tu cuenta.
+          </p>
+          <button
+            type="button"
+            onClick={() => navigate('/cuenta')}
+            className="px-6 py-3 rounded-2xl text-sm font-medium text-white focus:outline-none"
+            style={{ background: 'linear-gradient(135deg, #2474D5, #9044EB)', boxShadow: '0 4px 16px rgba(144,68,235,0.3)', fontFamily: 'DM Sans, sans-serif' }}
+          >
+            Ir a mi cuenta
+          </button>
+        </div>
+      </PageLayout>
+    );
+  }
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();

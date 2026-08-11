@@ -6,19 +6,88 @@ import logoImg from '../assets/Logo.png';
 
 type Tab = 'login' | 'register';
 
+const inputClass =
+  'w-full px-4 py-3 rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none transition-colors duration-200';
+
+const inputBaseStyle: React.CSSProperties = {
+  background: 'rgba(255,255,255,0.04)',
+  border: '1px solid rgba(255,255,255,0.09)',
+  fontFamily: 'DM Sans, sans-serif',
+};
+
+// PasswordInput defined OUTSIDE to avoid remount on every keystroke
+function PasswordInput({
+  value,
+  onChange,
+  show,
+  onToggle,
+  placeholder,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  show: boolean;
+  onToggle: () => void;
+  placeholder: string;
+}) {
+  return (
+    <div className="relative">
+      <input
+        type={show ? 'text' : 'password'}
+        required
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`${inputClass} pr-12`}
+        style={inputBaseStyle}
+      />
+      <button
+        type="button"
+        onClick={onToggle}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors focus:outline-none"
+      >
+        {show ? <EyeOff size={16} /> : <Eye size={16} />}
+      </button>
+    </div>
+  );
+}
+
+function TextInput({
+  type = 'text',
+  required = true,
+  placeholder,
+  value,
+  onChange,
+}: {
+  type?: string;
+  required?: boolean;
+  placeholder: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <input
+      type={type}
+      required={required}
+      placeholder={placeholder}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className={inputClass}
+      style={inputBaseStyle}
+    />
+  );
+}
+
 export default function AuthPage() {
   const { login, register } = useAuth();
   const navigate = useNavigate();
   const [tab, setTab] = useState<Tab>('login');
 
-  // Login fields
   const [loginName, setLoginName] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
   const [showLoginPw, setShowLoginPw] = useState(false);
 
-  // Register fields
   const [regName, setRegName] = useState('');
   const [regPassword, setRegPassword] = useState('');
   const [regConfirm, setRegConfirm] = useState('');
@@ -50,45 +119,6 @@ export default function AuthPage() {
     if (result.error) setRegError(result.error);
     else navigate('/cuenta');
   };
-
-  const inputClass =
-    'w-full px-4 py-3 rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none transition-all duration-200';
-  const inputStyle = {
-    background: 'rgba(255,255,255,0.04)',
-    border: '1px solid rgba(255,255,255,0.09)',
-    fontFamily: 'DM Sans, sans-serif',
-  };
-  const inputFocusStyle = {
-    border: '1px solid rgba(144,68,235,0.6)',
-    boxShadow: '0 0 0 3px rgba(144,68,235,0.12)',
-  };
-
-  const PasswordInput = ({
-    value, onChange, show, onToggle, placeholder,
-  }: {
-    value: string; onChange: (v: string) => void; show: boolean; onToggle: () => void; placeholder: string;
-  }) => (
-    <div className="relative">
-      <input
-        type={show ? 'text' : 'password'}
-        required
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={inputClass}
-        style={{ ...inputStyle, paddingRight: '48px' }}
-        onFocus={(e) => Object.assign(e.currentTarget.style, { ...inputStyle, paddingRight: '48px', ...inputFocusStyle })}
-        onBlur={(e) => Object.assign(e.currentTarget.style, { ...inputStyle, paddingRight: '48px' })}
-      />
-      <button
-        type="button"
-        onClick={onToggle}
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors focus:outline-none"
-      >
-        {show ? <EyeOff size={16} /> : <Eye size={16} />}
-      </button>
-    </div>
-  );
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16" style={{ background: '#05070F' }}>
@@ -142,17 +172,7 @@ export default function AuthPage() {
               <label className="block text-xs text-slate-400 mb-1.5" style={{ fontFamily: 'DM Sans, sans-serif' }}>
                 Nombre
               </label>
-              <input
-                type="text"
-                required
-                placeholder="Tu nombre completo"
-                value={loginName}
-                onChange={(e) => setLoginName(e.target.value)}
-                className={inputClass}
-                style={inputStyle}
-                onFocus={(e) => Object.assign(e.currentTarget.style, inputFocusStyle)}
-                onBlur={(e) => Object.assign(e.currentTarget.style, inputStyle)}
-              />
+              <TextInput placeholder="Tu nombre completo" value={loginName} onChange={setLoginName} />
             </div>
             <div>
               <label className="block text-xs text-slate-400 mb-1.5" style={{ fontFamily: 'DM Sans, sans-serif' }}>
@@ -166,19 +186,8 @@ export default function AuthPage() {
                 placeholder="Tu contraseña"
               />
             </div>
-            {loginError && (
-              <p className="text-sm px-4 py-3 rounded-xl" style={{ color: '#fb7185', background: 'rgba(193,43,77,0.08)', border: '1px solid rgba(193,43,77,0.18)', fontFamily: 'DM Sans, sans-serif' }}>
-                {loginError}
-              </p>
-            )}
-            <button
-              type="submit"
-              disabled={loginLoading}
-              className="w-full py-3.5 rounded-2xl font-semibold text-white text-sm mt-2 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus:outline-none disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
-              style={{ background: 'linear-gradient(135deg, #2474D5, #9044EB)', boxShadow: '0 6px 24px rgba(144,68,235,0.35)', fontFamily: 'DM Sans, sans-serif' }}
-            >
-              {loginLoading ? 'Iniciando…' : 'Iniciar sesión'}
-            </button>
+            {loginError && <ErrorBox>{loginError}</ErrorBox>}
+            <SubmitButton loading={loginLoading} label="Iniciar sesión" loadingLabel="Iniciando…" />
             <p className="text-center text-xs text-slate-500 mt-1" style={{ fontFamily: 'DM Sans, sans-serif' }}>
               ¿No tienes cuenta?{' '}
               <button type="button" onClick={() => setTab('register')} className="text-purple-400 hover:text-purple-300 transition-colors focus:outline-none">
@@ -195,17 +204,7 @@ export default function AuthPage() {
               <label className="block text-xs text-slate-400 mb-1.5" style={{ fontFamily: 'DM Sans, sans-serif' }}>
                 Nombre completo
               </label>
-              <input
-                type="text"
-                required
-                placeholder="Tu nombre"
-                value={regName}
-                onChange={(e) => setRegName(e.target.value)}
-                className={inputClass}
-                style={inputStyle}
-                onFocus={(e) => Object.assign(e.currentTarget.style, inputFocusStyle)}
-                onBlur={(e) => Object.assign(e.currentTarget.style, inputStyle)}
-              />
+              <TextInput placeholder="Tu nombre" value={regName} onChange={setRegName} />
             </div>
             <div>
               <label className="block text-xs text-slate-400 mb-1.5" style={{ fontFamily: 'DM Sans, sans-serif' }}>
@@ -231,19 +230,8 @@ export default function AuthPage() {
                 placeholder="Repite tu contraseña"
               />
             </div>
-            {regError && (
-              <p className="text-sm px-4 py-3 rounded-xl" style={{ color: '#fb7185', background: 'rgba(193,43,77,0.08)', border: '1px solid rgba(193,43,77,0.18)', fontFamily: 'DM Sans, sans-serif' }}>
-                {regError}
-              </p>
-            )}
-            <button
-              type="submit"
-              disabled={regLoading}
-              className="w-full py-3.5 rounded-2xl font-semibold text-white text-sm mt-2 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus:outline-none disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
-              style={{ background: 'linear-gradient(135deg, #2474D5, #9044EB)', boxShadow: '0 6px 24px rgba(144,68,235,0.35)', fontFamily: 'DM Sans, sans-serif' }}
-            >
-              {regLoading ? 'Creando cuenta…' : 'Crear cuenta gratis'}
-            </button>
+            {regError && <ErrorBox>{regError}</ErrorBox>}
+            <SubmitButton loading={regLoading} label="Crear cuenta gratis" loadingLabel="Creando cuenta…" />
             <p className="text-center text-xs text-slate-500 mt-1" style={{ fontFamily: 'DM Sans, sans-serif' }}>
               ¿Ya tienes cuenta?{' '}
               <button type="button" onClick={() => setTab('login')} className="text-purple-400 hover:text-purple-300 transition-colors focus:outline-none">
@@ -257,5 +245,29 @@ export default function AuthPage() {
         )}
       </div>
     </div>
+  );
+}
+
+function ErrorBox({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      className="text-sm px-4 py-3 rounded-xl"
+      style={{ color: '#fb7185', background: 'rgba(193,43,77,0.08)', border: '1px solid rgba(193,43,77,0.18)', fontFamily: 'DM Sans, sans-serif' }}
+    >
+      {children}
+    </p>
+  );
+}
+
+function SubmitButton({ loading, label, loadingLabel }: { loading: boolean; label: string; loadingLabel: string }) {
+  return (
+    <button
+      type="submit"
+      disabled={loading}
+      className="w-full py-3.5 rounded-2xl font-semibold text-white text-sm mt-2 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus:outline-none disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+      style={{ background: 'linear-gradient(135deg, #2474D5, #9044EB)', boxShadow: '0 6px 24px rgba(144,68,235,0.35)', fontFamily: 'DM Sans, sans-serif' }}
+    >
+      {loading ? loadingLabel : label}
+    </button>
   );
 }

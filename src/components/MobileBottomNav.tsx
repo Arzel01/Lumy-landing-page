@@ -2,10 +2,10 @@ import { Home, Bell, Map, Crosshair, User } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const TABS = [
+const ALL_TABS = [
   { label: 'Inicio',    Icon: Home,      to: '/',               exact: true,  authRequired: false, deviceRequired: false },
   { label: 'Notif.',   Icon: Bell,      to: '/notificaciones', exact: false, authRequired: true,  deviceRequired: true  },
-  { label: 'Mapa',     Icon: Map,       to: '/mapa',           exact: false, authRequired: false, deviceRequired: false },
+  { label: 'Mapa',     Icon: Map,       to: '/mapa',           exact: false, authRequired: true,  deviceRequired: false },
   { label: 'Rastrear', Icon: Crosshair, to: '/rastrear',       exact: false, authRequired: true,  deviceRequired: true  },
   { label: 'Cuenta',   Icon: User,      to: '/cuenta',         exact: false, authRequired: true,  deviceRequired: false },
 ];
@@ -17,14 +17,18 @@ export default function MobileBottomNav() {
 
   const hasDevices = (user?.devices?.length ?? 0) > 0;
 
+  // Hide auth-required tabs when not logged in
+  const TABS = user
+    ? ALL_TABS
+    : ALL_TABS.filter((t) => !t.authRequired);
+
   const isActive = (to: string, exact: boolean) => {
     if (to === '/cuenta') return pathname === '/cuenta' || pathname === '/auth';
     if (exact) return pathname === to;
     return pathname.startsWith(to);
   };
 
-  const handleTab = (to: string, authRequired: boolean, deviceRequired: boolean) => {
-    if (authRequired && !user) { navigate('/auth'); return; }
+  const handleTab = (to: string, deviceRequired: boolean) => {
     if (deviceRequired && !hasDevices) { navigate('/cuenta'); return; }
     navigate(to);
   };
@@ -39,13 +43,13 @@ export default function MobileBottomNav() {
       }}
     >
       <div className="flex h-16">
-        {TABS.map(({ label, Icon, to, exact, authRequired, deviceRequired }) => {
+        {TABS.map(({ label, Icon, to, exact, deviceRequired }) => {
           const active = isActive(to, exact);
           return (
             <button
               key={to}
               type="button"
-              onClick={() => handleTab(to, authRequired, deviceRequired)}
+              onClick={() => handleTab(to, deviceRequired)}
               className="flex-1 flex flex-col items-center justify-center gap-1 relative focus:outline-none active:scale-90 transition-transform duration-100"
               style={{ border: 'none', background: 'transparent' }}
             >
