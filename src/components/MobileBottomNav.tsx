@@ -28,7 +28,8 @@ export default function MobileBottomNav() {
     return pathname.startsWith(to);
   };
 
-  const handleTab = (to: string, deviceRequired: boolean) => {
+  const handleTab = (to: string, authRequired: boolean, deviceRequired: boolean) => {
+    if (authRequired && !user) { navigate('/auth'); return; }
     if (deviceRequired && !hasDevices) { navigate('/cuenta'); return; }
     navigate(to);
   };
@@ -43,13 +44,13 @@ export default function MobileBottomNav() {
       }}
     >
       <div className="flex h-16">
-        {TABS.map(({ label, Icon, to, exact, deviceRequired }) => {
+        {TABS.map(({ label, Icon, to, exact, authRequired, deviceRequired }) => {
           const active = isActive(to, exact);
           return (
             <button
               key={to}
               type="button"
-              onClick={() => handleTab(to, deviceRequired)}
+              onClick={() => handleTab(to, authRequired, deviceRequired)}
               className="flex-1 flex flex-col items-center justify-center gap-1 relative focus:outline-none active:scale-90 transition-transform duration-100"
               style={{ border: 'none', background: 'transparent' }}
             >
