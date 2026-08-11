@@ -1,9 +1,9 @@
 import { useState, type FormEvent } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { LogOut, ShoppingBag, Trash2, ArrowLeft, Plus, KeyRound, Cpu, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { LogOut, ShoppingBag, Trash2, Plus, KeyRound, Cpu, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import logoImg from '../assets/Logo.png';
+import PageLayout from '../layouts/PageLayout';
 
 const formatCode = (raw = '') => raw.match(/.{1,4}/g)?.join('-') ?? raw;
 
@@ -83,20 +83,9 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="min-h-screen px-4 py-16" style={{ background: '#05070F' }}>
+    <PageLayout>
+    <div className="min-h-screen px-4 py-8">
       <div className="max-w-2xl mx-auto">
-        {/* Back + Logo */}
-        <div className="flex items-center justify-between mb-10">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}
-          >
-            <ArrowLeft size={15} />
-            Inicio
-          </Link>
-          <img src={logoImg} alt="LUMY" className="h-7 w-auto" />
-        </div>
 
         {/* Profile card */}
         <div
@@ -320,5 +309,6 @@ export default function AccountPage() {
         </div>
       </div>
     </div>
+    </PageLayout>
   );
 }
