@@ -17,10 +17,10 @@ export default function MobileBottomNav() {
 
   const hasDevices = (user?.devices?.length ?? 0) > 0;
 
-  // Hide auth-required tabs when not logged in
+  // Hide Notif., Mapa and Rastrear when not logged in; always show Inicio and Cuenta
   const TABS = user
     ? ALL_TABS
-    : ALL_TABS.filter((t) => !t.authRequired);
+    : ALL_TABS.filter((t) => !t.authRequired || t.to === '/cuenta');
 
   const isActive = (to: string, exact: boolean) => {
     if (to === '/cuenta') return pathname === '/cuenta' || pathname === '/auth';
