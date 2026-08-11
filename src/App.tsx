@@ -6,6 +6,9 @@ import TiendaPage from './pages/TiendaPage';
 import SoportePage from './pages/SoportePage';
 import AuthPage from './pages/AuthPage';
 import AccountPage from './pages/AccountPage';
+import NotificacionesPage from './pages/NotificacionesPage';
+import MapaPage from './pages/MapaPage';
+import RastrearPage from './pages/RastrearPage';
 import CheckoutLayout from './layouts/CheckoutLayout';
 import CartPage from './pages/checkout/CartPage';
 import ShippingPage from './pages/checkout/ShippingPage';
@@ -22,6 +25,9 @@ export default function App() {
       <Route path="/soporte" element={<SoportePage />} />
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/cuenta" element={<AccountPage />} />
+      <Route path="/notificaciones" element={<NotificacionesPage />} />
+      <Route path="/mapa" element={<MapaPage />} />
+      <Route path="/rastrear" element={<RastrearPage />} />
 
       <Route path="/checkout" element={<CheckoutLayout />}>
         <Route index element={<Navigate to="/checkout/carrito" replace />} />

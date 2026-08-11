@@ -1,21 +1,21 @@
-import { Home, Sparkles, ShoppingBag, Cpu, User } from 'lucide-react';
+import { Home, Bell, Map, Crosshair, User } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
 const TABS = [
-  { label: 'Inicio', Icon: Home, to: '/', exact: true, showCart: false },
-  { label: 'Specs', Icon: Sparkles, to: '/caracteristicas', exact: false, showCart: false },
-  { label: 'Tienda', Icon: ShoppingBag, to: '/tienda', exact: false, showCart: true },
-  { label: 'Hardware', Icon: Cpu, to: '/hardware', exact: false, showCart: false },
-  { label: 'Cuenta', Icon: User, to: '/cuenta', exact: false, showCart: false },
+  { label: 'Inicio',    Icon: Home,      to: '/',               exact: true,  authRequired: false, deviceRequired: false },
+  { label: 'Notif.',   Icon: Bell,      to: '/notificaciones', exact: false, authRequired: true,  deviceRequired: true  },
+  { label: 'Mapa',     Icon: Map,       to: '/mapa',           exact: false, authRequired: false, deviceRequired: false },
+  { label: 'Rastrear', Icon: Crosshair, to: '/rastrear',       exact: false, authRequired: true,  deviceRequired: true  },
+  { label: 'Cuenta',   Icon: User,      to: '/cuenta',         exact: false, authRequired: true,  deviceRequired: false },
 ];
 
 export default function MobileBottomNav() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { itemCount } = useCart();
   const { user } = useAuth();
+
+  const hasDevices = (user?.devices?.length ?? 0) > 0;
 
   const isActive = (to: string, exact: boolean) => {
     if (to === '/cuenta') return pathname === '/cuenta' || pathname === '/auth';
@@ -23,9 +23,10 @@ export default function MobileBottomNav() {
     return pathname.startsWith(to);
   };
 
-  const handleTab = (to: string) => {
-    if (to === '/cuenta' && !user) navigate('/auth');
-    else navigate(to);
+  const handleTab = (to: string, authRequired: boolean, deviceRequired: boolean) => {
+    if (authRequired && !user) { navigate('/auth'); return; }
+    if (deviceRequired && !hasDevices) { navigate('/cuenta'); return; }
+    navigate(to);
   };
 
   return (
@@ -38,17 +39,16 @@ export default function MobileBottomNav() {
       }}
     >
       <div className="flex h-16">
-        {TABS.map(({ label, Icon, to, exact, showCart }) => {
+        {TABS.map(({ label, Icon, to, exact, authRequired, deviceRequired }) => {
           const active = isActive(to, exact);
           return (
             <button
               key={to}
               type="button"
-              onClick={() => handleTab(to)}
+              onClick={() => handleTab(to, authRequired, deviceRequired)}
               className="flex-1 flex flex-col items-center justify-center gap-1 relative focus:outline-none active:scale-90 transition-transform duration-100"
               style={{ border: 'none', background: 'transparent' }}
             >
-              {/* Active top line */}
               {active && (
                 <span
                   className="absolute top-0 left-1/2 -translate-x-1/2 w-8 rounded-b-full"
@@ -59,28 +59,14 @@ export default function MobileBottomNav() {
                   }}
                 />
               )}
-
-              {/* Icon */}
-              <div className="relative">
-                <Icon
-                  size={22}
-                  style={{
-                    color: active ? '#9044EB' : '#3d4a5c',
-                    filter: active ? 'drop-shadow(0 0 5px rgba(144,68,235,0.55))' : 'none',
-                    transition: 'color 0.2s, filter 0.2s',
-                  }}
-                />
-                {showCart && itemCount > 0 && (
-                  <span
-                    className="absolute -top-1.5 -right-2 min-w-[14px] h-3.5 px-0.5 rounded-full flex items-center justify-center text-[7px] font-bold text-white"
-                    style={{ background: '#C12B4D', fontFamily: 'Sora, sans-serif' }}
-                  >
-                    {itemCount > 9 ? '9+' : itemCount}
-                  </span>
-                )}
-              </div>
-
-              {/* Label */}
+              <Icon
+                size={22}
+                style={{
+                  color: active ? '#9044EB' : '#3d4a5c',
+                  filter: active ? 'drop-shadow(0 0 5px rgba(144,68,235,0.55))' : 'none',
+                  transition: 'color 0.2s, filter 0.2s',
+                }}
+              />
               <span
                 className="text-[9px]"
                 style={{

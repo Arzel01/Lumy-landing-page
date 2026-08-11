@@ -52,6 +52,18 @@ const FEATURES: Feature[] = [
     accent: '#C12B4D',
     accentRgb: '193,43,77',
   },
+  {
+    id: 4,
+    eyebrow: '04 - App Conectada',
+    title: 'Ecosistema Lumy en tu bolsillo',
+    description:
+      'La app compañera de Lumy te ofrece recomendaciones personalizadas según tu perfil viajero, rastreo del dispositivo en tiempo real para tu seguridad, y el asistente Lumy AI para navegación directamente desde tu teléfono. Tu aventura, siempre conectada.',
+    tag: 'Ecosistema Lumy',
+    imageSrc: feature3,
+    imageLabel: 'App conectada Lumy en smartphone',
+    accent: '#0EA5E9',
+    accentRgb: '14,165,233',
+  },
 ];
 
 function FeatureBlock({

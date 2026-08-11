@@ -13,6 +13,7 @@ export default function ImagePlaceholder({
 }: ImagePlaceholderProps) {
   return (
     <div
+      aria-label={label}
       className={`${width} ${height} ${className} rounded-2xl`}
       style={{
         background: 'rgba(255,255,255,0.03)',
