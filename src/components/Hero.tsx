@@ -16,7 +16,7 @@ export default function Hero() {
   return (
     <section
       id="inicio"
-      className="relative min-h-screen flex items-center pt-4 pb-12 overflow-hidden"
+      className="relative min-h-screen flex items-center pt-4 pb-12 md:pb-12 overflow-hidden"
     >
       {/* Ambient background glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -92,11 +92,11 @@ export default function Hero() {
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-wrap gap-4 mb-12">
+          <div className="flex flex-wrap gap-4 mb-10 md:mb-12">
             <button
               type="button"
               onClick={() => navigate('/tienda')}
-              className="group flex items-center gap-2.5 px-8 py-4 rounded-full font-semibold text-sm text-white transition-all duration-300 hover:scale-105 active:scale-95"
+              className="group flex items-center justify-center gap-2.5 px-8 py-4 rounded-full font-semibold text-sm text-white transition-all duration-300 hover:scale-105 active:scale-95 w-full md:w-auto"
               style={{
                 background: 'linear-gradient(135deg, #2474D5, #9044EB)',
                 boxShadow: '0 4px 28px rgba(144,68,235,0.38)',
@@ -113,7 +113,7 @@ export default function Hero() {
 
           {/* Stats */}
           <div
-            className="flex flex-wrap gap-8 pt-8"
+            className="grid grid-cols-3 md:flex md:flex-wrap gap-4 md:gap-8 pt-8"
             style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
           >
             {STATS.map((stat) => (
@@ -154,7 +154,7 @@ export default function Hero() {
               <img
                 src={lumyImg}
                 alt="Dispositivo LUMY"
-                className="w-full h-72 md:h-[460px] object-cover rounded-2xl transition-transform duration-300 group-hover:scale-[1.01]"
+                className="w-full h-60 md:h-[460px] object-cover rounded-2xl transition-transform duration-300 group-hover:scale-[1.01]"
                 style={{ border: '1px solid rgba(255,255,255,0.06)' }}
               />
               {/* Hover overlay */}

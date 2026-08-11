@@ -98,7 +98,7 @@ export default function Ecommerce() {
   const inc = () => setQuantity((q) => Math.min(10, q + 1));
 
   return (
-    <section id="comprar" className="py-12 lg:py-16 relative">
+    <section id="comprar" className="relative pt-12 lg:pt-16 pb-40 md:pb-12 lg:pb-16">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section header */}
         <div className="text-center mb-14">
@@ -414,6 +414,53 @@ export default function Ecommerce() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mobile sticky buy bar — sits above the bottom nav (bottom-16 = 64px) */}
+      <div
+        className="fixed left-0 right-0 z-40 px-4 py-3 md:hidden"
+        style={{
+          bottom: '64px',
+          background: 'rgba(5,7,15,0.97)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderTop: '1px solid rgba(255,255,255,0.07)',
+        }}
+      >
+        <div className="flex items-center justify-between mb-2.5">
+          <div>
+            <span
+              className="font-bold text-white text-lg"
+              style={{ fontFamily: 'Sora, sans-serif' }}
+            >
+              ${(129 * quantity).toFixed(2)}
+            </span>
+            <span
+              className="text-slate-500 text-xs ml-2 line-through"
+            >
+              ${(169 * quantity).toFixed(2)}
+            </span>
+          </div>
+          <span
+            className="text-[10px] font-bold px-2 py-0.5 rounded"
+            style={{ background: 'rgba(193,43,77,0.15)', color: '#fb7185' }}
+          >
+            −24%
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={handleAddToCart}
+          className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-xl font-bold text-sm text-white transition-all duration-200 active:scale-[0.98] focus:outline-none"
+          style={{
+            background: 'linear-gradient(135deg, #2474D5, #9044EB)',
+            boxShadow: '0 4px 20px rgba(144,68,235,0.4)',
+            fontFamily: 'DM Sans, sans-serif',
+          }}
+        >
+          <ShoppingCart size={16} />
+          Añadir al Carrito
+        </button>
       </div>
     </section>
   );

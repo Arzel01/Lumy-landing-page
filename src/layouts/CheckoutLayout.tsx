@@ -192,7 +192,7 @@ export default function CheckoutLayout() {
         )}
 
         {/* Page content */}
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 md:py-10">
           <Outlet />
         </div>
       </div>

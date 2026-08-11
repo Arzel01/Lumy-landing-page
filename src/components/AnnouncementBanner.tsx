@@ -1,7 +1,7 @@
 export default function AnnouncementBanner() {
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-50 h-10 flex items-center justify-center px-4"
+      className="fixed top-0 left-0 right-0 z-50 h-10 hidden md:flex items-center justify-center px-4"
       style={{
         background: 'rgba(5,7,15,0.97)',
         borderBottom: '1px solid rgba(255,255,255,0.05)',

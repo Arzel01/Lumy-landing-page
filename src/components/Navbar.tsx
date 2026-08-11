@@ -43,7 +43,7 @@ export default function Navbar() {
 
   return (
     <header
-      className="fixed left-0 right-0 z-40"
+      className="fixed left-0 right-0 z-40 hidden md:block"
       style={{
         top: '40px',
         background: 'rgba(5,7,15,0.82)',

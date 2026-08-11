@@ -42,7 +42,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="grid lg:grid-cols-[1fr_360px] gap-8">
+    <div className="grid lg:grid-cols-[1fr_360px] gap-8 pb-36 lg:pb-0">
       {/* Items list */}
       <div>
         <h1
@@ -169,8 +169,8 @@ export default function CartPage() {
         </div>
       </div>
 
-      {/* Order summary */}
-      <div>
+      {/* Order summary — hidden on mobile (replaced by sticky bar) */}
+      <div className="hidden lg:block">
         <div
           className="p-6 rounded-2xl sticky top-24"
           style={{
@@ -248,6 +248,49 @@ export default function CartPage() {
           </Link>
         </div>
       </div>
+
+      {/* Mobile sticky checkout bar */}
+      {items.length > 0 && (
+        <div
+          className="fixed bottom-0 left-0 right-0 z-50 px-4 py-4 lg:hidden"
+          style={{
+            background: 'rgba(5,7,15,0.98)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+          }}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <div style={{ fontFamily: 'DM Sans, sans-serif' }}>
+              <span className="text-slate-400 text-xs block">
+                {itemCount} {itemCount === 1 ? 'artículo' : 'artículos'} · Envío gratis
+              </span>
+              <span
+                className="font-bold text-white text-lg"
+                style={{ fontFamily: 'Sora, sans-serif' }}
+              >
+                ${(total + total * 0.08 + SHIPPING_COST).toFixed(2)}
+              </span>
+            </div>
+            <span className="text-[10px] text-green-400" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+              IVA incluido
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => navigate('/checkout/envio')}
+            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm text-white transition-all duration-200 active:scale-[0.98] focus:outline-none"
+            style={{
+              background: 'linear-gradient(135deg, #2474D5, #9044EB)',
+              boxShadow: '0 4px 20px rgba(144,68,235,0.35)',
+              fontFamily: 'DM Sans, sans-serif',
+            }}
+          >
+            Proceder al pago
+            <ArrowRight size={15} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

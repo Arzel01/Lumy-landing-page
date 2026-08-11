@@ -47,7 +47,7 @@ export default function ShippingPage() {
   };
 
   return (
-    <div className="grid lg:grid-cols-[1fr_320px] gap-8">
+    <div className="grid lg:grid-cols-[1fr_320px] gap-8 pb-4">
       {/* Left: form */}
       <div>
         <h1
@@ -224,8 +224,10 @@ export default function ShippingPage() {
         </div>
       </div>
 
-      {/* Right: order summary */}
-      <OrderSummary items={items} total={total} />
+      {/* Right: order summary — hidden on mobile */}
+      <div className="hidden lg:block">
+        <OrderSummary items={items} total={total} />
+      </div>
     </div>
   );
 }

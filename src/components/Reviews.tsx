@@ -80,6 +80,49 @@ const REVIEWS: Review[] = [
   },
 ];
 
+function ReviewCard({ review, i, inView }: { review: Review; i: number; inView: boolean }) {
+  return (
+    <div
+      className={`flex flex-col gap-5 p-6 rounded-2xl transition-all duration-500 hover:-translate-y-0.5 ${
+        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+      style={{
+        background: 'rgba(255,255,255,0.02)',
+        border: '1px solid rgba(255,255,255,0.06)',
+        transitionDelay: `${i * 60}ms`,
+      }}
+    >
+      <div className="flex gap-0.5">
+        {Array.from({ length: review.rating }).map((_, j) => (
+          <span key={j} className="text-yellow-400 text-sm">★</span>
+        ))}
+      </div>
+      <p className="text-slate-300 text-sm leading-relaxed flex-1" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+        "{review.comment}"
+      </p>
+      <div className="flex items-center gap-3 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div
+          className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+          style={{ background: review.avatarGradient, fontFamily: 'Sora, sans-serif' }}
+        >
+          {review.initials}
+        </div>
+        <div>
+          <div className="text-white font-semibold text-sm" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            {review.name}
+          </div>
+          <div className="text-slate-500 text-xs" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            {review.role}
+          </div>
+          <div className="text-slate-600 text-xs" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            {review.location}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Reviews() {
   const { ref, inView } = useInView(0.1);
 
@@ -123,12 +166,24 @@ export default function Reviews() {
           </p>
         </div>
 
-        {/* Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* Desktop grid — hidden on mobile */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {REVIEWS.map((review, i) => (
+            <ReviewCard key={review.id} review={review} i={i} inView={inView} />
+          ))}
+        </div>
+      </div>
+
+      {/* Mobile horizontal carousel — outside padded container to avoid overflow */}
+      <div
+        className="md:hidden overflow-x-auto pt-1 pb-5"
+        style={{ scrollbarWidth: 'none' } as React.CSSProperties}
+      >
+        <div className="flex gap-3 px-6" style={{ width: 'max-content' }}>
           {REVIEWS.map((review, i) => (
             <div
               key={review.id}
-              className={`flex flex-col gap-5 p-6 rounded-2xl transition-all duration-500 hover:-translate-y-0.5 ${
+              className={`w-[76vw] max-w-[290px] flex-shrink-0 flex flex-col gap-4 p-5 rounded-2xl transition-all duration-500 ${
                 inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
               style={{
@@ -137,51 +192,24 @@ export default function Reviews() {
                 transitionDelay: `${i * 60}ms`,
               }}
             >
-              {/* Stars */}
               <div className="flex gap-0.5">
                 {Array.from({ length: review.rating }).map((_, j) => (
                   <span key={j} className="text-yellow-400 text-sm">★</span>
                 ))}
               </div>
-
-              {/* Comment */}
-              <p
-                className="text-slate-300 text-sm leading-relaxed flex-1"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}
-              >
+              <p className="text-slate-300 text-sm leading-relaxed flex-1" style={{ fontFamily: 'DM Sans, sans-serif' }}>
                 "{review.comment}"
               </p>
-
-              {/* Author */}
-              <div
-                className="flex items-center gap-3 pt-4"
-                style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
-              >
+              <div className="flex items-center gap-3 pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                 <div
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0"
                   style={{ background: review.avatarGradient, fontFamily: 'Sora, sans-serif' }}
                 >
                   {review.initials}
                 </div>
                 <div>
-                  <div
-                    className="text-white font-semibold text-sm"
-                    style={{ fontFamily: 'DM Sans, sans-serif' }}
-                  >
-                    {review.name}
-                  </div>
-                  <div
-                    className="text-slate-500 text-xs"
-                    style={{ fontFamily: 'DM Sans, sans-serif' }}
-                  >
-                    {review.role}
-                  </div>
-                  <div
-                    className="text-slate-600 text-xs"
-                    style={{ fontFamily: 'DM Sans, sans-serif' }}
-                  >
-                    {review.location}
-                  </div>
+                  <div className="text-white font-semibold text-xs" style={{ fontFamily: 'DM Sans, sans-serif' }}>{review.name}</div>
+                  <div className="text-slate-500 text-[10px]" style={{ fontFamily: 'DM Sans, sans-serif' }}>{review.location}</div>
                 </div>
               </div>
             </div>
