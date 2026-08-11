@@ -1,13 +1,24 @@
-import { Home, Bell, Map, Crosshair, User } from 'lucide-react';
+import { Home, Bell, Map, Crosshair, User, PlusCircle } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const ALL_TABS = [
-  { label: 'Inicio',    Icon: Home,      to: '/',               exact: true,  authRequired: false, deviceRequired: false },
-  { label: 'Notif.',   Icon: Bell,      to: '/notificaciones', exact: false, authRequired: true,  deviceRequired: true  },
-  { label: 'Mapa',     Icon: Map,       to: '/mapa',           exact: false, authRequired: true,  deviceRequired: false },
-  { label: 'Rastrear', Icon: Crosshair, to: '/rastrear',       exact: false, authRequired: true,  deviceRequired: true  },
-  { label: 'Cuenta',   Icon: User,      to: '/cuenta',         exact: false, authRequired: true,  deviceRequired: false },
+const TABS_WITH_DEVICE = [
+  { label: 'Inicio',    Icon: Home,      to: '/',               exact: true  },
+  { label: 'Notif.',   Icon: Bell,      to: '/notificaciones', exact: false },
+  { label: 'Mapa',     Icon: Map,       to: '/mapa',           exact: false },
+  { label: 'Rastrear', Icon: Crosshair, to: '/rastrear',       exact: false },
+  { label: 'Cuenta',   Icon: User,      to: '/cuenta',         exact: false },
+];
+
+const TABS_NO_DEVICE = [
+  { label: 'Inicio',    Icon: Home,       to: '/',       exact: true  },
+  { label: 'Agregar Lumy', Icon: PlusCircle, to: '/cuenta', exact: false, addPrompt: true },
+  { label: 'Cuenta',   Icon: User,       to: '/cuenta', exact: false },
+];
+
+const TABS_NO_SESSION = [
+  { label: 'Inicio', Icon: Home, to: '/',      exact: true  },
+  { label: 'Cuenta', Icon: User, to: '/auth',  exact: false },
 ];
 
 export default function MobileBottomNav() {
@@ -17,21 +28,18 @@ export default function MobileBottomNav() {
 
   const hasDevices = (user?.devices?.length ?? 0) > 0;
 
-  // Hide Notif., Mapa and Rastrear when not logged in; always show Inicio and Cuenta
-  const TABS = user
-    ? ALL_TABS
-    : ALL_TABS.filter((t) => !t.authRequired || t.to === '/cuenta');
+  const TABS = !user
+    ? TABS_NO_SESSION
+    : hasDevices
+      ? TABS_WITH_DEVICE
+      : TABS_NO_DEVICE;
 
-  const isActive = (to: string, exact: boolean) => {
+  const isActive = (to: string, exact: boolean, addPrompt?: boolean) => {
+    if (addPrompt) return false;
     if (to === '/cuenta') return pathname === '/cuenta' || pathname === '/auth';
+    if (to === '/auth') return pathname === '/auth' || pathname === '/cuenta';
     if (exact) return pathname === to;
     return pathname.startsWith(to);
-  };
-
-  const handleTab = (to: string, authRequired: boolean, deviceRequired: boolean) => {
-    if (authRequired && !user) { navigate('/auth'); return; }
-    if (deviceRequired && !hasDevices) { navigate('/cuenta'); return; }
-    navigate(to);
   };
 
   return (
@@ -44,13 +52,15 @@ export default function MobileBottomNav() {
       }}
     >
       <div className="flex h-16">
-        {TABS.map(({ label, Icon, to, exact, authRequired, deviceRequired }) => {
-          const active = isActive(to, exact);
+        {TABS.map(({ label, Icon, to, exact, ...rest }) => {
+          const addPrompt = (rest as { addPrompt?: boolean }).addPrompt;
+          const active = isActive(to, exact, addPrompt);
+
           return (
             <button
-              key={to}
+              key={label}
               type="button"
-              onClick={() => handleTab(to, authRequired, deviceRequired)}
+              onClick={() => navigate(to)}
               className="flex-1 flex flex-col items-center justify-center gap-1 relative focus:outline-none active:scale-90 transition-transform duration-100"
               style={{ border: 'none', background: 'transparent' }}
             >
@@ -64,20 +74,34 @@ export default function MobileBottomNav() {
                   }}
                 />
               )}
-              <Icon
-                size={22}
-                style={{
-                  color: active ? '#9044EB' : '#3d4a5c',
-                  filter: active ? 'drop-shadow(0 0 5px rgba(144,68,235,0.55))' : 'none',
-                  transition: 'color 0.2s, filter 0.2s',
-                }}
-              />
+
+              {addPrompt ? (
+                <span
+                  className="flex items-center justify-center w-9 h-9 rounded-2xl"
+                  style={{
+                    background: 'linear-gradient(135deg, #2474D5, #9044EB)',
+                    boxShadow: '0 0 14px rgba(144,68,235,0.55)',
+                  }}
+                >
+                  <Icon size={18} style={{ color: '#fff' }} />
+                </span>
+              ) : (
+                <Icon
+                  size={22}
+                  style={{
+                    color: active ? '#9044EB' : '#3d4a5c',
+                    filter: active ? 'drop-shadow(0 0 5px rgba(144,68,235,0.55))' : 'none',
+                    transition: 'color 0.2s, filter 0.2s',
+                  }}
+                />
+              )}
+
               <span
-                className="text-[9px]"
+                className="text-[9px] leading-tight text-center"
                 style={{
-                  color: active ? '#9044EB' : '#2f3d50',
+                  color: addPrompt ? '#9044EB' : active ? '#9044EB' : '#2f3d50',
                   fontFamily: 'DM Sans, sans-serif',
-                  fontWeight: active ? '600' : '400',
+                  fontWeight: addPrompt || active ? '600' : '400',
                   transition: 'color 0.2s',
                 }}
               >
